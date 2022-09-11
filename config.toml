@@ -55,7 +55,7 @@ disableHugoGeneratorInject = false
   # Metadata mostly used in document's head
   description = ""
   keywords = ""
-  images = ["img/V.png"]
+  images = ["img/shubakki.jpg"]
 
   homeSubtitle = "Bored kid"
   
@@ -80,7 +80,7 @@ disableHugoGeneratorInject = false
     msapplication = "#0c0c0d"
 
   [params.logo]
-    logoText     = "$ echo 'maldev extravaganza'"
+    logoText     = "$ echo '🦐 shrimple maldev.'"
     logoHomeLink = "/"
     # Set true to remove the logo cursor entirely.
     # logoCursorDisabled = false
