@@ -1,0 +1,24 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on shubakki</title>
+        <link>https://shubakki.github.io/posts/</link>
+        <description>Recent content in Posts on shubakki</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>CC Attribution-NonCommercial 4.0 International License</copyright>
+        <lastBuildDate>Sun, 11 Sep 2022 17:24:28 +0200</lastBuildDate>
+        <atom:link href="https://shubakki.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Initial</title>
+            <link>https://shubakki.github.io/posts/2022/09/initial/</link>
+            <pubDate>Sun, 11 Sep 2022 17:24:28 +0200</pubDate>
+            
+            <guid>https://shubakki.github.io/posts/2022/09/initial/</guid>
+            <description>Test 1 2 </description>
+            <content type="html"><![CDATA[<h1 id="test-1-2">Test 1 2</h1>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
