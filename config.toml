@@ -80,7 +80,7 @@ disableHugoGeneratorInject = false
     msapplication = "#0c0c0d"
 
   [params.logo]
-    logoText     = "$ mv brain /dev/null"
+    logoText     = "$ echo 'maldev extravaganza'"
     logoHomeLink = "/"
     # Set true to remove the logo cursor entirely.
     # logoCursorDisabled = false
