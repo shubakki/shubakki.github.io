@@ -1,3 +1,121 @@
-baseURL = 'http://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
+baseURL = "https://shubakki.github.io/"
+title   = "shubakki"
+languageCode = "en-us"
+theme = "hello-friend-ng"
+
+PygmentsCodeFences = true
+PygmentsStyle = "monokai"
+
+paginate  = 10
+rssLimit  = 0  # Maximum number of items in the RSS feed.
+copyright = "CC Attribution-NonCommercial 4.0 International License" # This message is only used by the RSS template.
+
+googleAnalytics = "UA-176711986-1"
+
+archetypeDir = "archetypes"
+contentDir   = "content"
+dataDir      = "data"
+layoutDir    = "layouts"
+publishDir   = "public"
+
+buildDrafts  = false
+buildFuture  = false
+buildExpired = false
+canonifyURLs = true
+
+enableRobotsTXT = false
+enableGitInfo   = false
+enableEmoji     = true
+enableMissingTranslationPlaceholders = false
+disableRSS     = false
+disableSitemap = false
+disable404     = false
+disableHugoGeneratorInject = false
+
+[permalinks]
+  posts = "/posts/:year/:month/:title/"
+
+[author]
+  name = "Vie"
+
+[blackfriday]
+  hrefTargetBlank = true
+
+[taxonomies]
+  tag      = "tags"
+  category = "categories"
+  #series   = "series"
+
+[params]
+  dateform        = "Jan 2, 2006"
+  dateformShort   = "Jan 2"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04 -0700"
+
+  # Metadata mostly used in document's head
+  description = ""
+  keywords = ""
+  images = ["img/V.png"]
+
+  homeSubtitle = "Bored kid"
+  
+  # Set disableReadOtherPosts to true in order to hide the links to other posts.
+  disableReadOtherPosts = false
+
+  # Integrate Javascript files or stylesheets by adding the url to the external assets or by
+  # linking local files with their path relative to the static folder, e.g. "css/styles.css"
+  customCSS = []
+  customJS  = []
+
+  # Toggle this option need to rebuild SCSS, requires extended version of Hugo
+  justifyContent = true  # Set "text-align: justify" to .content.
+
+  # Default theme "light" or "dark"
+  defaultTheme = "dark"
+  themeColor = "#0c0c0d"
+
+  # Colors for favicons
+  [params.favicon.color]
+    mask = "#0c0c0d"
+    msapplication = "#0c0c0d"
+
+  [params.logo]
+    logoText     = "$ mv brain /dev/null"
+    logoHomeLink = "/"
+    # Set true to remove the logo cursor entirely.
+    # logoCursorDisabled = false
+    # Set to a valid CSS color to change the cursor in the logo.
+    logoCursorColor    = "#7B2CBF"
+    # Set to a valid CSS time value to change the animation duration, "0s" to disable.
+    # logoCursorAnimate  = "2s"
+
+  [params.portrait]
+    path = "img/shubakki.jpg"
+    alt = "Portrait"
+
+  # Social icons
+  [[params.social]]
+    name = "github"
+    url  = "https://github.com/shubakki"
+
+  [[params.social]]
+    name = "hackthebox"
+    url  =  "https://app.hackthebox.com/profile/504214"
+
+  [[params.social]]
+    name = "discord"
+    url  =  "https://discord.com/users/860207764910505985"
+    
+[menu]
+  [[menu.main]]
+    identifier = "about"
+    name       = "About Me"
+    url        = "about/"
+  [[menu.main]]
+    identifier = "posts"
+    name       = "Posts"
+    url        = "posts/"
+  [[menu.main]]
+    identifier = "categories"
+    name       = "Categories"
+    url        = "categories/"
