@@ -91,7 +91,7 @@ disableHugoGeneratorInject = false
 
   [params.portrait]
     path = "img/shubakki.jpg"
-    alt = "Portrait"
+    alt = "where portrait"
 
   # Social icons
   [[params.social]]
