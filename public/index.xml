@@ -6,17 +6,6 @@
     <description>Recent content on shubakki</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>CC Attribution-NonCommercial 4.0 International License</copyright>
-    <lastBuildDate>Sat, 19 Nov 2022 23:16:09 +0100</lastBuildDate><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Initial</title>
-      <link>https://shubakki.github.io/posts/2022/11/initial/</link>
-      <pubDate>Sat, 19 Nov 2022 23:16:09 +0100</pubDate>
-      
-      <guid>https://shubakki.github.io/posts/2022/11/initial/</guid>
-      <description>Test post dont mind it
-echo &amp;#34;test snippet&amp;#34; </description>
-    </item>
-    
+    <copyright>CC Attribution-NonCommercial 4.0 International License</copyright><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
