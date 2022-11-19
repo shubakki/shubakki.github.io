@@ -7,14 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>CC Attribution-NonCommercial 4.0 International License</copyright>
-    <lastBuildDate>Sun, 20 Nov 2022 00:38:54 +0100</lastBuildDate><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Nov 2022 00:46:52 +0100</lastBuildDate><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Initial</title>
       <link>https://shubakki.github.io/posts/2022/11/initial/</link>
-      <pubDate>Sun, 20 Nov 2022 00:38:54 +0100</pubDate>
+      <pubDate>Sun, 20 Nov 2022 00:46:52 +0100</pubDate>
       
       <guid>https://shubakki.github.io/posts/2022/11/initial/</guid>
-      <description>echo &amp;#34;syntax highlighting check&amp;#34; &amp;gt;&amp;gt; /dev/null </description>
+      <description>echo &amp;#34;syntax coloring&amp;#34; &amp;gt;&amp;gt; /dev/null </description>
     </item>
     
   </channel>
