@@ -3,9 +3,6 @@ title   = "shubakki"
 languageCode = "en-us"
 theme = "hello-friend-ng"
 
-PygmentsCodeFences = true
-PygmentsStyle = "monokai"
-
 paginate  = 10
 rssLimit  = 0  # Maximum number of items in the RSS feed.
 copyright = "CC Attribution-NonCommercial 4.0 International License" # This message is only used by the RSS template.
@@ -55,7 +52,7 @@ disableHugoGeneratorInject = false
   # Metadata mostly used in document's head
   description = ""
   keywords = ""
-  images = ["img/shubakki.jpg"]
+  images = ["assets/shubakki.jpg"]
 
   homeSubtitle = "Noob"
   
@@ -90,7 +87,7 @@ disableHugoGeneratorInject = false
     # logoCursorAnimate  = "2s"
 
   [params.portrait]
-    path = "img/shubakki.jpg"
+    path = "assets/shubakki.jpg"
     alt = "where portrait"
 
   # Social icons
