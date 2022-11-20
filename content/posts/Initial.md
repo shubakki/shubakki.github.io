@@ -1,13 +1,17 @@
 ---
 title: "Initial"
-date: 2022-11-20T00:46:52+01:00
-draft: false
+date: 2022-11-20T01:00:47+01:00
+draft: true
 toc: false
 images:
 tags:
-  - untagged
+  - antisandboxing evasion
 ---
-```bash
-echo "syntax coloring" >> /dev/null 
-```
 
+
+![[Pasted image 20221120010243.png]]
+
+```cpp
+#include <windows.h>
+#include "opsec.h"
+```
