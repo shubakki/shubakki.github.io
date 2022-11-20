@@ -9,7 +9,8 @@ tags:
 ---
 
 
-![[img/Pasted image 20221120010243.png]]
+{{< image src="/img/Pasted image 20221120010243.png" alt="failed but kinda works no" position="center" style="border-radius: 8px;" >}}
+
 
 ```cpp
 #include <windows.h>

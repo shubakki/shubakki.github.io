@@ -15,9 +15,11 @@
             <pubDate>Sun, 20 Nov 2022 01:00:47 +0100</pubDate>
             
             <guid>https://shubakki.github.io/posts/2022/11/initial/</guid>
-            <description>![[img/Pasted image 20221120010243.png]]
-#include &amp;lt;windows.h&amp;gt; #include &amp;#34;opsec.h&amp;#34; </description>
-            <content type="html"><![CDATA[<p>![[img/Pasted image 20221120010243.png]]</p>
+            <description>#include &amp;lt;windows.h&amp;gt; #include &amp;#34;opsec.h&amp;#34; </description>
+            <content type="html"><![CDATA[
+    <img src="/img/Pasted%20image%2020221120010243.png"  alt="failed but kinda works no"  class="center"  style="border-radius: 8px;"  />
+
+
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;windows.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;opsec.h&#34;</span><span style="color:#75715e">
 </span></span></span></code></pre></div>]]></content>
