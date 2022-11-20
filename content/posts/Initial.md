@@ -1,7 +1,7 @@
 ---
 title: "Initial"
 date: 2022-11-20T01:00:47+01:00
-draft: true
+draft: false
 toc: false
 images:
 tags:
