@@ -9,7 +9,7 @@ tags:
 ---
 
 
-![[Pasted image 20221120010243.png]]
+![[img/Pasted image 20221120010243.png]]
 
 ```cpp
 #include <windows.h>
