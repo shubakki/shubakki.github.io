@@ -2,10 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://shubakki.github.io/categories/</loc>
+    <loc>https://shubakki.github.io/posts/2022/11/aaa/</loc>
+    <lastmod>2022-11-29T01:28:29+01:00</lastmod>
+  </url><url>
+    <loc>https://shubakki.github.io/posts/</loc>
+    <lastmod>2022-11-29T01:28:29+01:00</lastmod>
   </url><url>
     <loc>https://shubakki.github.io/</loc>
+    <lastmod>2022-11-29T01:28:29+01:00</lastmod>
   </url><url>
     <loc>https://shubakki.github.io/tags/</loc>
+    <lastmod>2022-11-29T01:28:29+01:00</lastmod>
+  </url><url>
+    <loc>https://shubakki.github.io/tags/untagged/</loc>
+    <lastmod>2022-11-29T01:28:29+01:00</lastmod>
+  </url><url>
+    <loc>https://shubakki.github.io/categories/</loc>
   </url>
 </urlset>
