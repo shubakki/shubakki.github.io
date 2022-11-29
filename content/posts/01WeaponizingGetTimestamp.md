@@ -24,6 +24,10 @@ A plethora of techniques can be applied to still "sleep", we will see some of th
 
 ## Demonstration: Hooking sleep functions
 
+`Sleep`, `SleepEx` and `Thread.Sleep` all boil down to the `NtDelayExecution` syscall.
+
+
+
 ## Weaponizing `__get_timestamp()`
 Credits to Jordan Jay (Legacyy) for his amazing work on this.
 I wont delve too deep on how this works as Legacyy himself [literally made a blogpost about it](https://www.legacyy.xyz/defenseevasion/windows/2022/07/04/abusing-shareduserdata-for-defense-evasion-and-exploitation.html) + the code is well commented.
