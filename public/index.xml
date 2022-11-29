@@ -6,16 +6,6 @@
     <description>Recent content on shubakki</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>CC Attribution-NonCommercial 4.0 International License</copyright>
-    <lastBuildDate>Tue, 29 Nov 2022 01:17:12 +0100</lastBuildDate><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Test</title>
-      <link>https://shubakki.github.io/posts/2022/11/test/</link>
-      <pubDate>Tue, 29 Nov 2022 01:17:12 +0100</pubDate>
-      
-      <guid>https://shubakki.github.io/posts/2022/11/test/</guid>
-      <description>#include &amp;#34;minhook/include/MinHook.h&amp;#34; typedef DWORD( NTAPI *pNtDelayExecution )( IN BOOLEAN Alertable, IN PLARGE_INTEGER DelayInterval ); extern pNtDelayExecution pOrigNtDelayExecution = (pNtDelayExecution)GetProcAddress( GetModuleHandle( L&amp;#34;ntdll.dll&amp;#34; ), &amp;#34;NtDelayExecution&amp;#34; ); DWORD NTAPI NtDelayExecution( IN BOOLEAN Alertable, IN PLARGE_INTEGER DelayInterval ) { // Intercept whatever MessageBoxA( 0, &amp;#34;NO SLEEP 4 U&amp;#34;, &amp;#34;BTFO&amp;#34;, 0 ); // Return legit function ? return pOrigNtDelayExecution( Alertable, (PLARGE_INTEGER)0 ); } DWORD WINAPI InitHooksThread( LPVOID param ) { // MinHook itself requires initialisation, lets do this // before we hook specific API calls.</description>
-    </item>
-    
+    <copyright>CC Attribution-NonCommercial 4.0 International License</copyright><atom:link href="https://shubakki.github.io/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
