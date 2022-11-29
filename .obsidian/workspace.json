@@ -4,32 +4,42 @@
     "type": "split",
     "children": [
       {
-        "id": "94664693b5ef2c3c",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "96dc8cfb251285b6",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {}
-            },
-            "group": "2afcb690fbd090cf"
-          }
-        ]
-      },
-      {
         "id": "32ef7d2b5ea989a3",
         "type": "tabs",
+        "dimension": 51.01522842639594,
         "children": [
           {
             "id": "45fb6be19f855d7c",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/test.md",
+                "mode": "source",
+                "source": false
+              }
             },
-            "group": "2afcb690fbd090cf"
+            "group": "eb4156a6f78f5493"
+          }
+        ]
+      },
+      {
+        "id": "5814f66903d73d30",
+        "type": "tabs",
+        "dimension": 48.984771573604064,
+        "children": [
+          {
+            "id": "822e0582ffb487b6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/test.md",
+                "mode": "preview",
+                "source": false
+              }
+            },
+            "group": "eb4156a6f78f5493"
           }
         ]
       }
@@ -97,6 +107,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "content/posts/test.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +124,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "content/posts/test.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -134,18 +146,23 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "content/posts/test.md"
+              }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
     "width": 300,
     "collapsed": true
   },
-  "active": "96dc8cfb251285b6",
+  "active": "45fb6be19f855d7c",
   "lastOpenFiles": [
+    "content/posts/01WeaponizingGetTimestamp.md",
+    "public/img/Pasted image 20221120152458.png",
     "content/posts/Initial.md"
   ]
 }
