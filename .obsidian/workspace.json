@@ -6,7 +6,7 @@
       {
         "id": "32ef7d2b5ea989a3",
         "type": "tabs",
-        "dimension": 61.2802983219391,
+        "dimension": 54.50590428837787,
         "children": [
           {
             "id": "45fb6be19f855d7c",
@@ -26,7 +26,7 @@
       {
         "id": "5814f66903d73d30",
         "type": "tabs",
-        "dimension": 38.71970167806091,
+        "dimension": 45.49409571162212,
         "children": [
           {
             "id": "822e0582ffb487b6",
@@ -159,16 +159,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "822e0582ffb487b6",
+  "active": "45fb6be19f855d7c",
   "lastOpenFiles": [
     "public/img/01/diagram.png",
+    "public/img/01/diagram.png.png",
+    "public/img/01/cpucyles.png",
+    "content/posts/01WeaponizingGetTimestamp.md",
+    "public/img/01/sleepy.png",
+    "public/img/shubakki.jpg",
     "public/img/01/messagebox.png",
     "public/img/01/sleepy.png.png",
-    "content/posts/01WeaponizingGetTimestamp.md",
-    "public/img/shubakki.jpg",
     "public/img/Pasted image 20221201010225.png",
-    "content/posts/test.md",
-    "public/img/Pasted image 20221120152458.png",
-    "content/posts/Initial.md"
+    "content/posts/test.md"
   ]
 }
