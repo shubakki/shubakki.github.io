@@ -12,9 +12,11 @@
             "id": "45fb6be19f855d7c",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "public/img/01/diagram.png"
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
+                "mode": "source",
+                "source": false
               }
             },
             "group": "eb4156a6f78f5493"
@@ -30,9 +32,11 @@
             "id": "822e0582ffb487b6",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "public/img/01/diagram.png"
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
+                "mode": "source",
+                "source": false
               }
             },
             "group": "eb4156a6f78f5493"
@@ -103,7 +107,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "public/img/01/diagram.png",
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -120,7 +124,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "public/img/01/diagram.png",
+                "file": "content/posts/01WeaponizingGetTimestamp.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -143,7 +147,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "public/img/01/diagram.png"
+                "file": "content/posts/01WeaponizingGetTimestamp.md"
               }
             }
           }
@@ -157,9 +161,9 @@
   },
   "active": "45fb6be19f855d7c",
   "lastOpenFiles": [
+    "public/img/01/diagram.png",
     "public/img/01/cpucycles.png",
     "content/posts/01WeaponizingGetTimestamp.md",
-    "public/img/01/diagram.png",
     "public/img/01/diagram.png.png",
     "public/img/01/sleepy.png",
     "public/img/shubakki.jpg",
