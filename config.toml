@@ -103,6 +103,9 @@ disableHugoGeneratorInject = false
     name = "discord"
     url  =  "https://discord.com/users/860207764910505985"
     
+  [[params.social]]
+    name = "twitter"
+    url = "https://twitter.com/shubakki"
 [menu]
   [[menu.main]]
     identifier = "about"
